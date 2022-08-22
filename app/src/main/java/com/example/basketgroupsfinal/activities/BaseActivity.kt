@@ -5,14 +5,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.basketgroupsfinal.R
+import com.example.basketgroupsfinal.databinding.ActivityBaseBinding
+import com.example.basketgroupsfinal.databinding.ActivitySignUpBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.dialog_progress.*
 
 open class BaseActivity : AppCompatActivity() {
+
+    private var tv_progress_text:TextView? = null
 
     private var doubleBackToExitPressedOnce = false
 
@@ -30,7 +34,9 @@ open class BaseActivity : AppCompatActivity() {
         The resource will be inflated, adding all top-level views to the screen.*/
         mProgressDialog.setContentView(R.layout.dialog_progress)
 
-        mProgressDialog.tv_progress_text.text = text
+        tv_progress_text = mProgressDialog.findViewById(R.id.tv_progress_text)
+
+        tv_progress_text?.text = text
 
         //Start the dialog and display it on screen.
         mProgressDialog.show()

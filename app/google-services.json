@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "139808017467",
+    "project_id": "basketgroups-557d4",
+    "storage_bucket": "basketgroups-557d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139808017467:android:a7e1bb3caace59cb6a201e",
+        "android_client_info": {
+          "package_name": "com.example.basketgroupsfinal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139808017467-jnjr8u9trbp5qgchcfq88a9kocjrib8f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQEWaTNbUC08mlkwdbQtvpJUWcQdSngHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139808017467-jnjr8u9trbp5qgchcfq88a9kocjrib8f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
