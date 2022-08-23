@@ -7,6 +7,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.basketgroupsfinal.R
 import com.example.basketgroupsfinal.databinding.ActivityIntroBinding
+import com.example.basketgroupsfinal.firebase.FirestoreClass
 
 class IntroActivity : BaseActivity() {
 
@@ -15,6 +16,14 @@ class IntroActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
+
+        val currentUserID = FirestoreClass().getCurrentUserID()
+
+        if (currentUserID.isNotEmpty()) {
+            // Start the Main Activity
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+
 
         binding = ActivityIntroBinding.inflate(layoutInflater)
         setContentView(binding?.root)

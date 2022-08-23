@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.basketgroupsfinal.R
 import com.example.basketgroupsfinal.databinding.ActivitySignInBinding
+import com.example.basketgroupsfinal.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -88,5 +89,13 @@ class SignInActivity : BaseActivity() {
         }
 
         binding?.toolbarSignInActivity?.setNavigationOnClickListener { onBackPressed() }
+    }
+
+    fun signInSuccess(loggedInUser: User) {
+
+        hideProgressDialog()
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+
     }
 }
