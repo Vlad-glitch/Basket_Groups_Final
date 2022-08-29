@@ -49,6 +49,7 @@ dependencies {
 
     implementation 'androidx.core:core-splashscreen:1.0.0'
     implementation 'com.google.android.material:material:1.6.1'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:30.3.1')
