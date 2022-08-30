@@ -1,6 +1,8 @@
 package com.example.basketgroupsfinal.firebase
 
+import android.app.Activity
 import android.util.Log
+import com.example.basketgroupsfinal.activities.MainActivity
 import com.example.basketgroupsfinal.activities.SignInActivity
 import com.example.basketgroupsfinal.activities.SignUpActivity
 import com.example.basketgroupsfinal.models.User
@@ -34,7 +36,7 @@ class FirestoreClass {
             }
     }
 
-    fun signInUser(activity: SignInActivity) {
+    fun signInUser(activity: Activity) {
 
         // Here we pass the collection name from which we wants the data.
         mFireStore.collection(Constants.USERS)
@@ -51,11 +53,28 @@ class FirestoreClass {
                 // Here we have received the document snapshot which is converted into the User Data model object.
                 val loggedInUser = document.toObject(User::class.java)!!
 
-                // Here call a function of base activity for transferring the result to it.
-                activity.signInSuccess(loggedInUser)
+                when (activity) {
+                    is SignInActivity -> {
+                        activity.signInSuccess(loggedInUser)
+                    }
+                    is MainActivity -> {
+                        activity.updateNavigationUserDetails(loggedInUser)
+                    }
+                    // END
+                }
                 // END
             }
             .addOnFailureListener { e ->
+                when (activity) {
+                    is SignInActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is MainActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    // END
+                }
+
                 Log.e(
                     activity.javaClass.simpleName,
                     "Error while getting loggedIn user details",
