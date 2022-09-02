@@ -1,21 +1,16 @@
 package com.example.basketgroupsfinal.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
 import com.example.basketgroupsfinal.R
-import com.example.basketgroupsfinal.databinding.ActivityIntroBinding
 import com.example.basketgroupsfinal.databinding.ActivityMainBinding
 import com.example.basketgroupsfinal.firebase.FirestoreClass
 import com.example.basketgroupsfinal.models.User
-import com.google.android.material.navigation.NavigationBarItemView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
@@ -34,7 +29,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         binding!!.navView.setNavigationItemSelectedListener(this)
 
-        FirestoreClass().signInUser(this@MainActivity)
+        FirestoreClass().loadUserData(this@MainActivity)
 
     }
 
@@ -76,8 +71,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         when (item.itemId) {
             R.id.nav_my_profile -> {
-
-                Toast.makeText(this@MainActivity, "My Profile", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, MyProfileActivity::class.java))
             }
 
             R.id.nav_sign_out -> {

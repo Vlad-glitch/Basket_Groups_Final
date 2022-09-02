@@ -3,6 +3,7 @@ package com.example.basketgroupsfinal.firebase
 import android.app.Activity
 import android.util.Log
 import com.example.basketgroupsfinal.activities.MainActivity
+import com.example.basketgroupsfinal.activities.MyProfileActivity
 import com.example.basketgroupsfinal.activities.SignInActivity
 import com.example.basketgroupsfinal.activities.SignUpActivity
 import com.example.basketgroupsfinal.models.User
@@ -36,7 +37,7 @@ class FirestoreClass {
             }
     }
 
-    fun signInUser(activity: Activity) {
+    fun loadUserData(activity: Activity) {
 
         // Here we pass the collection name from which we wants the data.
         mFireStore.collection(Constants.USERS)
@@ -60,6 +61,9 @@ class FirestoreClass {
                     is MainActivity -> {
                         activity.updateNavigationUserDetails(loggedInUser)
                     }
+                    is MyProfileActivity -> {
+                        activity.setUserDataInUI(loggedInUser)
+                    }
                     // END
                 }
                 // END
@@ -72,6 +76,10 @@ class FirestoreClass {
                     is MainActivity -> {
                         activity.hideProgressDialog()
                     }
+                    is MyProfileActivity -> {
+                        activity.hideProgressDialog()
+                    }
+
                     // END
                 }
 
@@ -93,6 +101,8 @@ class FirestoreClass {
         }
         return currentUserID
     }
+
+
 
 
 }
