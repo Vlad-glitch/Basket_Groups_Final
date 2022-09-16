@@ -1,10 +1,13 @@
 package com.example.basketgroupsfinal.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
 import com.example.basketgroupsfinal.R
@@ -66,12 +69,25 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     }
 
+    private val getResult =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                FirestoreClass().loadUserData(this@MainActivity)
+            } else {
+                Log.e("Cancelled", "Cancelled")
+            }
+        }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val drawerLayout = binding?.drawerLayout
 
         when (item.itemId) {
             R.id.nav_my_profile -> {
-                startActivity(Intent(this, MyProfileActivity::class.java))
+                intent = Intent(this, MyProfileActivity::class.java)
+                //startActivity(Intent(this, MyProfileActivity::class.java))
+                getResult.launch(intent)
             }
 
             R.id.nav_sign_out -> {
@@ -111,8 +127,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         // Set the user name
         navUsername.text = loggedInUser.name
 
-
     }
-
 
 }

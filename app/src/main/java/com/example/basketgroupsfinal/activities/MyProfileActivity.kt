@@ -1,15 +1,12 @@
 package com.example.basketgroupsfinal.activities
 
 import android.Manifest
-import android.content.Intent
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.webkit.MimeTypeMap
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,7 +14,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.basketgroupsfinal.R
-import com.example.basketgroupsfinal.databinding.ActivityMainBinding
 import com.example.basketgroupsfinal.databinding.ActivityMyProfileBinding
 import com.example.basketgroupsfinal.firebase.FirestoreClass
 import com.example.basketgroupsfinal.models.User
@@ -118,7 +114,7 @@ class MyProfileActivity : BaseActivity() {
         }
     }
 
-    val getImage = registerForActivityResult(
+    private val getImage = registerForActivityResult(
         ActivityResultContracts.GetContent(),
         ActivityResultCallback {
 
@@ -146,9 +142,9 @@ class MyProfileActivity : BaseActivity() {
 
     private fun setupActionBar() {
 
-        var toolbar_my_profile_activity = binding?.toolbarMyProfileActivity
+        val toolbarMyProfileActivity = binding?.toolbarMyProfileActivity
 
-        setSupportActionBar(toolbar_my_profile_activity)
+        setSupportActionBar(toolbarMyProfileActivity)
 
         val actionBar = supportActionBar
         if (actionBar != null) {
@@ -157,7 +153,7 @@ class MyProfileActivity : BaseActivity() {
             actionBar.title = resources.getString(R.string.my_profile)
         }
 
-        toolbar_my_profile_activity?.setNavigationOnClickListener { onBackPressed() }
+        toolbarMyProfileActivity?.setNavigationOnClickListener { onBackPressed() }
     }
 
     fun setUserDataInUI(user: User) {
@@ -262,6 +258,8 @@ class MyProfileActivity : BaseActivity() {
     fun profileUpdateSuccess() {
 
         hideProgressDialog()
+
+        setResult(Activity.RESULT_OK)
 
         finish()
     }
