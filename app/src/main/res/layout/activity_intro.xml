@@ -81,4 +81,13 @@
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/btn_text_size" />
 
+    <android.widget.Button
+        android:id="@+id/btn_forgot_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I forgot my password"
+        android:background="@color/white"
+        android:textColor="@color/colorAccent"
+        android:stateListAnimator="@null" />
+
 </LinearLayout>

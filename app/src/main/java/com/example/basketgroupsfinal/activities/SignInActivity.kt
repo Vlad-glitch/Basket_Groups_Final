@@ -88,7 +88,7 @@ class SignInActivity : BaseActivity() {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_ios_24)
         }
 
-        binding?.toolbarSignInActivity?.setNavigationOnClickListener { onBackPressed() }
+        //binding?.toolbarSignInActivity?.setNavigationOnClickListener { onBackPressed() }
     }
 
     fun signInSuccess(loggedInUser: User) {

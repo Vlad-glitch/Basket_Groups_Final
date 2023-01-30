@@ -39,7 +39,7 @@ class SignUpActivity : BaseActivity() {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_ios_24)
         }
 
-        binding?.toolbarSignUpActivity?.setNavigationOnClickListener { onBackPressed() }
+        //binding?.toolbarSignUpActivity?.setNavigationOnClickListener { onBackPressed() }
 
         binding?.btnSignUp?.setOnClickListener{
             registerUser()

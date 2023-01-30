@@ -3,10 +3,8 @@ package com.example.basketgroupsfinal.firebase
 import android.app.Activity
 import android.util.Log
 import android.widget.Toast
-import com.example.basketgroupsfinal.activities.MainActivity
-import com.example.basketgroupsfinal.activities.MyProfileActivity
-import com.example.basketgroupsfinal.activities.SignInActivity
-import com.example.basketgroupsfinal.activities.SignUpActivity
+import com.example.basketgroupsfinal.activities.*
+import com.example.basketgroupsfinal.models.Place
 import com.example.basketgroupsfinal.models.User
 import com.example.basketgroupsfinal.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -46,7 +44,7 @@ class FirestoreClass {
             .document(getCurrentUserID())
             .get()
             .addOnSuccessListener { document ->
-                Log.e(
+                Log.i(
                     activity.javaClass.simpleName, document.toString()
                 )
 
@@ -126,5 +124,45 @@ class FirestoreClass {
             }
     }
 
+    fun getPlacesList(activity: MainActivity){
+        mFireStore.collection(Constants.PLACE)
+            .get()
+            .addOnSuccessListener {
+                document ->
+                Log.i(activity.javaClass.simpleName, document.documents.toString())
+                val placesList: ArrayList<Place> = ArrayList()
+
+                // A for loop as per the list of documents to convert them into Boards ArrayList.
+                for (i in document.documents) {
+
+                    val place = i.toObject(Place::class.java)!!
+                    place.id = i.id
+                    placesList.add(place)
+                }
+                activity.setupBasketPlaces(placesList)
+                //activity.setupBasketPlaces(null)
+            }.addOnFailureListener { e ->
+
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error while getting places.", e)
+            }
+
+    }
+
+    fun getPlaceDetails(activity: PlaceDetailsActivity, placeDocumentId: String) {
+        mFireStore.collection(Constants.PLACE)
+            .document(placeDocumentId)
+            .get()
+            .addOnSuccessListener {
+                    document ->
+                Log.i(activity.javaClass.simpleName, document.toString())
+                activity.placeDetails(document.toObject(Place::class.java)!!)
+            }.addOnFailureListener { e ->
+
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error while getting places.", e)
+            }
+
+    }
 
 }

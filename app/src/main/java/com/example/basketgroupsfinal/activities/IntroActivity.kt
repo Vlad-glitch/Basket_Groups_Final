@@ -3,6 +3,7 @@ package com.example.basketgroupsfinal.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.basketgroupsfinal.R
@@ -14,6 +15,7 @@ class IntroActivity : BaseActivity() {
     private var binding: ActivityIntroBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
 
@@ -37,6 +39,10 @@ class IntroActivity : BaseActivity() {
 
         binding?.btnSignInIntro?.setOnClickListener {
             startActivity(Intent(this, SignInActivity::class.java))
+        }
+
+        binding?.btnForgotPassword?.setOnClickListener{
+            startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
 
     }

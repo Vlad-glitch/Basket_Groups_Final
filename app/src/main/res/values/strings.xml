@@ -10,6 +10,7 @@
     <string name="password">Password</string>
     <string name="email">Email</string>
     <string name="sign_in_description_text">Enter your name, email id and password, to register with us.</string>
+    <string name="forgot_passwd_description_text">Enter your email to reset your password.</string>
     <string name="please_click_back_again_to_exit">Please click back again to exit.</string>
     <string name="please_wait">Please Wait&#8230;</string>
     <string name="nav_my_profile">My Profile</string>
@@ -17,6 +18,8 @@
     <string name="mobile">Mobile</string>
     <string name="update">UPDATE</string>
     <string name="my_profile">My Profile</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="recover_password">reset password</string>
 
 
 </resources>

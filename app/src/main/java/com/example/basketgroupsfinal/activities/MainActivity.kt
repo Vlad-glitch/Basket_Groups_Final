@@ -5,15 +5,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.basketgroupsfinal.R
+import com.example.basketgroupsfinal.adapters.BasketPlacesAdapter
 import com.example.basketgroupsfinal.databinding.ActivityMainBinding
 import com.example.basketgroupsfinal.firebase.FirestoreClass
+import com.example.basketgroupsfinal.models.Place
 import com.example.basketgroupsfinal.models.User
+import com.example.basketgroupsfinal.utils.Constants
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
@@ -56,17 +63,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         } else {
             drawerLayout.openDrawer(GravityCompat.START)
         }
-    }
-
-    override fun onBackPressed() {
-        val drawerLayout = binding?.drawerLayout
-
-        if (drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            doubleBackToExit()
-        }
-
     }
 
     private val getResult =
@@ -126,6 +122,35 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val navUsername = headerView.findViewById<TextView>(R.id.tv_username)
         // Set the user name
         navUsername.text = loggedInUser.name
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirestoreClass().getPlacesList(this)
+
+    }
+
+    fun setupBasketPlaces(basketPlaceList: ArrayList<Place>?){
+        //TODO
+        hideProgressDialog()
+        val rvBasketPlaceList: RecyclerView = findViewById(R.id.rv_basket_place_list)
+        if (basketPlaceList != null) {
+            if (basketPlaceList.size > 0) {
+                rvBasketPlaceList.visibility = View.VISIBLE
+                rvBasketPlaceList.layoutManager = LinearLayoutManager(this)
+                rvBasketPlaceList.setHasFixedSize(true)
+                val adapter = BasketPlacesAdapter(this, basketPlaceList)
+                rvBasketPlaceList.adapter = adapter
+
+                adapter.setOnClickListener(object: BasketPlacesAdapter.OnClickListener {
+                    override fun onClick(position: Int, model: Place) {
+                        val intent = Intent(this@MainActivity, PlaceDetailsActivity::class.java)
+                        intent.putExtra(Constants.DOCUMENT_ID, model.id)
+                        startActivity(intent)
+                    }
+                })
+            }else {
+                rvBasketPlaceList.visibility = View.GONE
+            }
+        }
 
     }
 

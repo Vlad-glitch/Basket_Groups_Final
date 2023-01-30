@@ -8,5 +8,8 @@ object Constants {
     const val IMAGE: String = "image"
     const val NAME: String = "name"
     const val MOBILE: String = "mobile"
+    const val PLACE: String = "places"
+    const val PLAYERS: String = "players"
+    const val DOCUMENT_ID: String = "id"
 
 }
