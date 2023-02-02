@@ -41,6 +41,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         FirestoreClass().loadUserData(this@MainActivity)
 
+        binding?.appBarMain?.floatingActionButton?.setOnClickListener{
+            val intent = Intent(this@MainActivity, AddBasketPlaceActivity::class.java)
+            startActivity(intent)
+
+        }
+
     }
 
     private fun setupActionBar() {

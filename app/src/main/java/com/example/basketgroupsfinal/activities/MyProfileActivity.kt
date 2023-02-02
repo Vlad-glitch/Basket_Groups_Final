@@ -26,7 +26,7 @@ class MyProfileActivity : BaseActivity() {
 
     companion object {
         //A unique code for asking the Read Storage Permission using this we will be check and identify in the method onRequestPermissionsResult
-        private const val READ_STORAGE_PERMISSION_CODE = 1
+        const val READ_STORAGE_PERMISSION_CODE = 1
 
     }
 
@@ -153,7 +153,7 @@ class MyProfileActivity : BaseActivity() {
             actionBar.title = resources.getString(R.string.my_profile)
         }
 
-        toolbarMyProfileActivity?.setNavigationOnClickListener { onBackPressed() }
+       // toolbarMyProfileActivity?.setNavigationOnClickListener { onBackPressed() }
     }
 
     fun setUserDataInUI(user: User) {

@@ -165,4 +165,19 @@ class FirestoreClass {
 
     }
 
+    fun addPlace(activity: AddBasketPlaceActivity, place: Place){
+        mFireStore.collection(Constants.PLACE)
+            .document()
+            .set(place, SetOptions.merge())
+            .addOnSuccessListener {
+                Toast.makeText(activity, "Place added", Toast.LENGTH_SHORT).show()
+                activity.placeCreatedSuccessfully()
+
+            }.addOnFailureListener {
+                Toast.makeText(activity, "Error adding place", Toast.LENGTH_SHORT).show()
+                activity.hideProgressDialog()
+            }
+
+    }
+
 }
