@@ -49,6 +49,15 @@
     <dimen name="my_profile_et_mobile_marginTop">20dp</dimen>
     <dimen name="my_profile_btn_update_marginTop">30dp</dimen>
 
+    <dimen name="item_place_cv_main_marginStartEnd">8dp</dimen>
+    <dimen name="item_place_cv_corner_radius">12dp</dimen>
+    <dimen name="item_place_cv_elevation">8dp</dimen>
+    <dimen name="item_places_content_padding">5dp</dimen>
+    <dimen name="item_place_image_size">75dp</dimen>
+    <dimen name="item_place_ll_marginStart">10dp</dimen>
+    <dimen name="item_place_ll_marginEnd">2dp</dimen>
+    <dimen name="item_place_title_textSize">18sp</dimen>
+    <dimen name="item_place_description_textSize">16sp</dimen>
 
 
 

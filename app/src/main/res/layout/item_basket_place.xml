@@ -8,11 +8,11 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/authentication_screen_marginStartEnd"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="@dimen/authentication_screen_marginStartEnd"
-        android:elevation="@dimen/card_view_elevation"
-        app:cardCornerRadius="@dimen/card_view_corner_radius"
+        android:layout_marginStart="@dimen/item_place_cv_main_marginStartEnd"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="@dimen/item_place_cv_main_marginStartEnd"
+        android:elevation="@dimen/item_place_cv_elevation"
+        app:cardCornerRadius="@dimen/item_place_cv_corner_radius"
         android:background="@color/white"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,11 +24,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="@dimen/card_view_layout_content_padding">
+            android:padding="@dimen/item_places_content_padding">
             <ImageView
                 android:id="@+id/iv_place_image"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="@dimen/item_place_image_size"
+                android:layout_height="@dimen/item_place_image_size"
                 android:contentDescription="@string/image_contentDescription"
                 android:src="@drawable/ic_baseline_sports_basketball_24">
 
@@ -37,8 +37,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/item_place_ll_marginStart"
+                android:layout_marginEnd="@dimen/item_place_ll_marginEnd"
                 android:orientation="vertical">
 
                 <TextView
@@ -46,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/primary_text_color"
-                    android:textSize="@dimen/intro_text_size"
+                    android:textSize="@dimen/item_place_title_textSize"
                     android:textStyle="bold"
                     tools:text="Name" />
 
@@ -55,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/primary_text_color"
-                    android:textSize="@dimen/intro_text_size"
+                    android:textSize="@dimen/item_place_description_textSize"
                     tools:text="Description" />
             </LinearLayout>
 

@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.allViews
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.basketgroupsfinal.R
 import com.example.basketgroupsfinal.activities.MainActivity
 import com.example.basketgroupsfinal.models.Place
@@ -51,7 +52,14 @@ open class BasketPlacesAdapter(
         val model = list[position]
 
         if (holder is MyViewHolder) {
-            //holder.itemView.iv_place_image.setImageURI(Uri.parse(model.image))
+
+            Glide
+                .with(context)
+                .load(model.image)
+                .centerCrop()
+                .placeholder(R.drawable.ic_baseline_sports_basketball_24)
+                .into(holder.itemView.findViewById(R.id.iv_place_image))
+
             var tvTitle:TextView = holder.itemView.findViewById(R.id.tvTitle)
             tvTitle.text = model.title
             //holder.itemView.tvTitle.text = model.title
