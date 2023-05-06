@@ -11,5 +11,7 @@ object Constants {
     const val PLACE: String = "places"
     const val PLAYERS: String = "players"
     const val DOCUMENT_ID: String = "id"
+    const val LATITUDE: String = "latitude"
+    const val LONGITUDE: String = "longitude"
 
 }
