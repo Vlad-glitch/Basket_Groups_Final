@@ -8,9 +8,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.commit
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,15 +20,18 @@ import com.example.basketgroupsfinal.adapters.BasketPlacesAdapter
 import com.example.basketgroupsfinal.databinding.ActivityMainBinding
 import com.example.basketgroupsfinal.firebase.FirestoreClass
 import com.example.basketgroupsfinal.models.Place
+import com.example.basketgroupsfinal.models.PlacesViewModel
 import com.example.basketgroupsfinal.models.User
 import com.example.basketgroupsfinal.utils.Constants
+import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
 
-class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, NavigationBarView.OnItemSelectedListener{
 
     private var binding: ActivityMainBinding? = null
+    private lateinit var placesViewModel: PlacesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,13 +43,13 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         binding!!.navView.setNavigationItemSelectedListener(this)
 
+        binding!!.appBarMain.bottomNav.setOnItemSelectedListener(this)
+
+        placesViewModel = ViewModelProvider(this).get(PlacesViewModel::class.java)
+
+        placesViewModel.loadPlaces()
+
         FirestoreClass().loadUserData(this@MainActivity)
-
-        binding?.appBarMain?.floatingActionButton?.setOnClickListener{
-            val intent = Intent(this@MainActivity, AddBasketPlaceActivity::class.java)
-            startActivity(intent)
-
-        }
 
     }
 
@@ -102,6 +106,18 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 startActivity(intent)
                 finish()
             }
+
+            R.id.nav_list -> {
+                supportFragmentManager.commit {
+                    replace(R.id.fragment_content, PlaceListFragment())
+                }
+            }
+
+            R.id.nav_map -> {
+                supportFragmentManager.commit {
+                    replace(R.id.fragment_content, MapPlacesFragment())
+                }
+            }
         }
         drawerLayout?.closeDrawer(GravityCompat.START)
         // END
@@ -129,11 +145,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         // Set the user name
         navUsername.text = loggedInUser.name
 
-        showProgressDialog(resources.getString(R.string.please_wait))
-        FirestoreClass().getPlacesList(this)
+        //showProgressDialog(resources.getString(R.string.please_wait))
+        //FirestoreClass().getPlacesList(this)
 
     }
 
+    /*
     fun setupBasketPlaces(basketPlaceList: ArrayList<Place>?){
         //TODO
         hideProgressDialog()
@@ -159,5 +176,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
 
     }
+
+     */
 
 }

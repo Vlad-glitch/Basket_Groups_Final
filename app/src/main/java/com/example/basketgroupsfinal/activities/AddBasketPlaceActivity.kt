@@ -91,16 +91,20 @@ class AddBasketPlaceActivity : BaseActivity() {
             if (result.resultCode == RESULT_OK) {
                 // Handle the result
                 val data = result.data
-                val place = Autocomplete.getPlaceFromIntent(data)
-                binding?.etLocation?.setText(place.address)
-                mLatitude = place.latLng!!.latitude
-                mLongitude = place.latLng!!.longitude
+                if (data != null) {
+                    val place = Autocomplete.getPlaceFromIntent(data)
+                    binding?.etLocation?.setText(place.address)
+                    mLatitude = place.latLng!!.latitude
+                    mLongitude = place.latLng!!.longitude
+                }
 
             } else if (result.resultCode == AutocompleteActivity.RESULT_ERROR) {
                 // Handle any errors
                 val data = result.data
-                val status = Autocomplete.getStatusFromIntent(data)
-                Log.e(TAG, status.statusMessage!!)
+                if (data != null) {
+                    val status = Autocomplete.getStatusFromIntent(data)
+                    Log.e(TAG, status.statusMessage!!)
+                }
             }
         }
 

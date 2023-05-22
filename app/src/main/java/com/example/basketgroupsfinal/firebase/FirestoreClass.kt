@@ -4,6 +4,7 @@ import android.app.Activity
 import android.util.Log
 import android.widget.Toast
 import com.example.basketgroupsfinal.activities.*
+import com.example.basketgroupsfinal.models.FirestoreListener
 import com.example.basketgroupsfinal.models.Place
 import com.example.basketgroupsfinal.models.User
 import com.example.basketgroupsfinal.utils.Constants
@@ -124,7 +125,8 @@ class FirestoreClass {
             }
     }
 
-    fun getPlacesList(activity: MainActivity){
+    /*
+    fun getPlacesList(activity: FirestoreListener){
         mFireStore.collection(Constants.PLACE)
             .get()
             .addOnSuccessListener {
@@ -147,6 +149,33 @@ class FirestoreClass {
                 Log.e(activity.javaClass.simpleName, "Error while getting places.", e)
             }
 
+    }
+
+     */
+
+    fun getPlacesList(firestoreListener: FirestoreListener){
+        mFireStore.collection(Constants.PLACE)
+            .get()
+            .addOnSuccessListener {
+                    document ->
+                Log.i("FirestoreClass", document.documents.toString())
+                val placesList: ArrayList<Place> = ArrayList()
+
+                // A for loop as per the list of documents to convert them into Boards ArrayList.
+                for (i in document.documents) {
+
+                    val place = i.toObject(Place::class.java)!!
+                    place.id = i.id
+                    placesList.add(place)
+                }
+
+                // Once places are loaded, call the corresponding method on the FirestoreListener
+                firestoreListener.onPlacesLoaded(placesList)
+            }.addOnFailureListener { e ->
+                // In case of error, notify the listener about the exception
+                //firestoreListener.onError(e)
+                Log.e("FirestoreClass", "Error while getting places.", e)
+            }
     }
 
     fun getPlaceDetails(activity: PlaceDetailsActivity, placeDocumentId: String) {
