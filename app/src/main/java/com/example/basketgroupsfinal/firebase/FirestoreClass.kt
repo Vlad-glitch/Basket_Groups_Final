@@ -9,6 +9,7 @@ import com.example.basketgroupsfinal.models.Place
 import com.example.basketgroupsfinal.models.User
 import com.example.basketgroupsfinal.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 
@@ -125,34 +126,6 @@ class FirestoreClass {
             }
     }
 
-    /*
-    fun getPlacesList(activity: FirestoreListener){
-        mFireStore.collection(Constants.PLACE)
-            .get()
-            .addOnSuccessListener {
-                document ->
-                Log.i(activity.javaClass.simpleName, document.documents.toString())
-                val placesList: ArrayList<Place> = ArrayList()
-
-                // A for loop as per the list of documents to convert them into Boards ArrayList.
-                for (i in document.documents) {
-
-                    val place = i.toObject(Place::class.java)!!
-                    place.id = i.id
-                    placesList.add(place)
-                }
-                activity.setupBasketPlaces(placesList)
-                //activity.setupBasketPlaces(null)
-            }.addOnFailureListener { e ->
-
-                activity.hideProgressDialog()
-                Log.e(activity.javaClass.simpleName, "Error while getting places.", e)
-            }
-
-    }
-
-     */
-
     fun getPlacesList(firestoreListener: FirestoreListener){
         mFireStore.collection(Constants.PLACE)
             .get()
@@ -194,19 +167,48 @@ class FirestoreClass {
 
     }
 
-    fun addPlace(activity: AddBasketPlaceActivity, place: Place){
-        mFireStore.collection(Constants.PLACE)
-            .document()
+
+    fun addPlace(activity: AddBasketPlaceActivity, place: Place) {
+        // Create a new document reference
+        val newPlaceRef = mFireStore.collection(Constants.PLACE).document()
+
+        // Set the ID of the place to the ID of the new document
+        place.id = newPlaceRef.id
+
+        // Set the data of the new document to the place
+        newPlaceRef
             .set(place, SetOptions.merge())
             .addOnSuccessListener {
                 Toast.makeText(activity, "Place added", Toast.LENGTH_SHORT).show()
                 activity.placeCreatedSuccessfully()
-
-            }.addOnFailureListener {
+            }
+            .addOnFailureListener {
                 Toast.makeText(activity, "Error adding place", Toast.LENGTH_SHORT).show()
                 activity.hideProgressDialog()
             }
+    }
 
+    fun addPlayerToPlace(placeId: String, userId: String) {
+        mFireStore.collection(Constants.PLACE)
+            .document(placeId)
+            .update("players", FieldValue.arrayUnion(userId))
+            .addOnSuccessListener {
+                Log.i("FirestoreClass", "User successfully added to place.")
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreClass", "Error adding user to place.", e)
+            }
+    }
+    fun removePlayerFromPlace(placeId: String, userId: String) {
+        mFireStore.collection(Constants.PLACE)
+            .document(placeId)
+            .update("players", FieldValue.arrayRemove(userId))
+            .addOnSuccessListener {
+                Log.i("FirestoreClass", "User successfully removed from place.")
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreClass", "Error removing user from place.", e)
+            }
     }
 
 }

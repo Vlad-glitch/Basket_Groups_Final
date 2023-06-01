@@ -1,6 +1,8 @@
 package com.example.basketgroupsfinal.activities
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,27 +19,49 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.basketgroupsfinal.R
 import com.example.basketgroupsfinal.adapters.BasketPlacesAdapter
+import com.example.basketgroupsfinal.broadcastreceiver.GeofenceBroadcastReceiver
 import com.example.basketgroupsfinal.databinding.ActivityMainBinding
 import com.example.basketgroupsfinal.firebase.FirestoreClass
 import com.example.basketgroupsfinal.models.Place
 import com.example.basketgroupsfinal.models.PlacesViewModel
 import com.example.basketgroupsfinal.models.User
 import com.example.basketgroupsfinal.utils.Constants
+import com.google.android.gms.location.Geofence
+import com.google.android.gms.location.GeofencingRequest
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import android.Manifest
+import android.os.Build
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import com.google.android.gms.location.GeofencingClient
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, NavigationBarView.OnItemSelectedListener{
 
     private var binding: ActivityMainBinding? = null
     private lateinit var placesViewModel: PlacesViewModel
+    private lateinit var geofencingClient: GeofencingClient
+    private val addedGeofences = mutableSetOf<String>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+
+        geofencingClient = LocationServices.getGeofencingClient(application.applicationContext)
 
         setupActionBar()
 
@@ -49,7 +73,149 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         placesViewModel.loadPlaces()
 
+        //requestPermissions()
+
+        placesViewModel.places.observe(this) { places ->
+            for (place in places) {
+                if (addedGeofences.contains(place.id)) {
+                    // This geofence has already been added, so skip it
+                    continue
+                }
+
+                // This geofence has not been added yet, so add it
+                addedGeofences.add(place.id)
+                startGeofence(place.id, place.latitude, place.longitude, 100.0f)
+            }
+        }
+
         FirestoreClass().loadUserData(this@MainActivity)
+
+    }
+
+    private fun setPendingIntent(geoId: String, action: String): PendingIntent {
+        val intent = Intent(application, GeofenceBroadcastReceiver::class.java)
+        intent.action = action
+        val pendingIntentId = geoId.hashCode() // Generate an Int ID from the String ID
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getBroadcast(
+                application,
+                pendingIntentId,
+                intent,
+                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        } else {
+            PendingIntent.getBroadcast(
+                application,
+                pendingIntentId,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        }
+    }
+
+    fun startGeofence(
+        id: String,
+        latitude: Double,
+        longitude: Double,
+        geoRadius: Float
+    ) {
+        Log.d("MainActivity", "Start geofence for place: $id")
+
+        Dexter.withContext(this)
+            .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+            .withListener(object : PermissionListener {
+                override fun onPermissionGranted(report: PermissionGrantedResponse) {
+                    // Fine location permission is granted
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        // If API level is 29 or above, ask for background location permission.
+                        Dexter.withContext(this@MainActivity)
+                            .withPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                            .withListener(object : PermissionListener {
+                                override fun onPermissionGranted(report: PermissionGrantedResponse) {
+                                    addGeofence(id, latitude, longitude, geoRadius) // call the separated geofencing method here
+                                }
+
+                                override fun onPermissionDenied(report: PermissionDeniedResponse) {
+                                    // Handle denied background location permission
+                                    Log.d("Geofence", "Background location permission not granted.")
+                                }
+
+                                override fun onPermissionRationaleShouldBeShown(
+                                    permission: PermissionRequest?,
+                                    token: PermissionToken?
+                                ) {
+                                    // This method is called when the user denies a permission
+                                    // and the permission rationale should be shown.
+                                    token?.continuePermissionRequest()
+                                }
+                            }).check()
+                    } else {
+                        // If API level is lower than 29, we're ready to start geofencing without asking for background location permission.
+                        addGeofence(id, latitude, longitude, geoRadius) // call the separated geofencing method here
+                    }
+                }
+
+                override fun onPermissionDenied(report: PermissionDeniedResponse) {
+                    // Handle denied fine location permission
+                    Log.d("Geofence", "Fine location permission not granted.")
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    permission: PermissionRequest?,
+                    token: PermissionToken?
+                ) {
+                    // This method is called when the user denies a permission
+                    // and the permission rationale should be shown.
+                    token?.continuePermissionRequest()
+                }
+
+            }).check()
+    }
+
+    @SuppressLint("MissingPermission")
+    fun addGeofence(
+        id: String,
+        latitude: Double,
+        longitude: Double,
+        geoRadius: Float
+    ) {
+        // The geofencing code is moved here.
+        val geofence = Geofence.Builder()
+            .setRequestId(id)
+            .setCircularRegion(
+                latitude,
+                longitude,
+                geoRadius
+            )
+            .setExpirationDuration(Geofence.NEVER_EXPIRE)
+            .setTransitionTypes(
+                Geofence.GEOFENCE_TRANSITION_ENTER
+                        or Geofence.GEOFENCE_TRANSITION_EXIT
+                        or Geofence.GEOFENCE_TRANSITION_DWELL
+            )
+            .setLoiteringDelay(5000) // Time between GEOFENCE_TRANSITION_ENTER and GEOFENCE_TRANSITION_DWELL
+            .build()
+
+        val geofencingRequest = GeofencingRequest.Builder()
+            .setInitialTrigger(
+                GeofencingRequest.INITIAL_TRIGGER_ENTER
+                        or GeofencingRequest.INITIAL_TRIGGER_EXIT
+                        or GeofencingRequest.INITIAL_TRIGGER_DWELL
+            )
+            .addGeofence(geofence)
+            .build()
+
+        geofencingClient.addGeofences(geofencingRequest, setPendingIntent(id, "com.example.basketgroupsfinal.ACTION_GEOFENCE_EVENT"))
+            .run {
+                addOnSuccessListener {
+                    Log.d("Geofence", "Successfully added. ID: $id, Lat: $latitude, Long: $longitude, Radius: $geoRadius")
+
+                }
+                addOnFailureListener {
+                    Log.e("Geofence", it.message.toString() + " Geofence not added")
+                }
+            }
 
     }
 
@@ -146,37 +312,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         navUsername.text = loggedInUser.name
 
         //showProgressDialog(resources.getString(R.string.please_wait))
-        //FirestoreClass().getPlacesList(this)
-
     }
-
-    /*
-    fun setupBasketPlaces(basketPlaceList: ArrayList<Place>?){
-        //TODO
-        hideProgressDialog()
-        val rvBasketPlaceList: RecyclerView = findViewById(R.id.rv_basket_place_list)
-        if (basketPlaceList != null) {
-            if (basketPlaceList.size > 0) {
-                rvBasketPlaceList.visibility = View.VISIBLE
-                rvBasketPlaceList.layoutManager = LinearLayoutManager(this)
-                rvBasketPlaceList.setHasFixedSize(true)
-                val adapter = BasketPlacesAdapter(this, basketPlaceList)
-                rvBasketPlaceList.adapter = adapter
-
-                adapter.setOnClickListener(object: BasketPlacesAdapter.OnClickListener {
-                    override fun onClick(position: Int, model: Place) {
-                        val intent = Intent(this@MainActivity, PlaceDetailsActivity::class.java)
-                        intent.putExtra(Constants.DOCUMENT_ID, model.id)
-                        startActivity(intent)
-                    }
-                })
-            }else {
-                rvBasketPlaceList.visibility = View.GONE
-            }
-        }
-
-    }
-
-     */
 
 }

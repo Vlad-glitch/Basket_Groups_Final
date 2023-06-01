@@ -10,7 +10,7 @@ data class Place(
     var description: String = "default",
     var latitude: Double = 0.0,
     var longitude: Double = 0.0,
-    //var players: ArrayList<String> = ArrayList()
+    var players: ArrayList<String> = ArrayList()
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
@@ -19,7 +19,7 @@ data class Place(
         parcel.readString()!!,
         parcel.readDouble(),
         parcel.readDouble(),
-        //parcel.createStringArrayList()!!
+        parcel.createStringArrayList()!!
     ) {
     }
 
@@ -30,7 +30,7 @@ data class Place(
         parcel.writeString(description)
         parcel.writeDouble(latitude)
         parcel.writeDouble(longitude)
-        //parcel.writeStringList(players)
+        parcel.writeStringList(players)
     }
 
     override fun describeContents(): Int {
