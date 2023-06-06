@@ -24,6 +24,8 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".broadcastreceiver.PlayerJoinAlarmReceiver" />
+
         <activity
             android:name=".PlayersProfileAdapter"
             android:exported="false">

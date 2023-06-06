@@ -3,6 +3,7 @@ package com.example.basketgroupsfinal.models
 import android.os.Parcel
 import android.os.Parcelable
 
+
 data class Place(
     var id: String = "default",
     var title: String = "default",
@@ -10,7 +11,8 @@ data class Place(
     var description: String = "default",
     var latitude: Double = 0.0,
     var longitude: Double = 0.0,
-    var players: ArrayList<String> = ArrayList()
+    var players: ArrayList<String> = ArrayList(),
+    var scheduledPlayers: ArrayList<Player> = ArrayList()
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
@@ -19,7 +21,9 @@ data class Place(
         parcel.readString()!!,
         parcel.readDouble(),
         parcel.readDouble(),
-        parcel.createStringArrayList()!!
+        parcel.createStringArrayList()!!,
+        parcel.readArrayList(Player::class.java.classLoader) as ArrayList<Player>
+
     ) {
     }
 
@@ -31,6 +35,7 @@ data class Place(
         parcel.writeDouble(latitude)
         parcel.writeDouble(longitude)
         parcel.writeStringList(players)
+        parcel.writeList(scheduledPlayers)
     }
 
     override fun describeContents(): Int {

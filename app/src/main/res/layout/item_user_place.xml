@@ -52,6 +52,14 @@
                     android:textStyle="bold"
                     tools:text="Name" />
 
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="12sp"
+                    tools:text="Scheduled Time" />
+
             </LinearLayout>
 
         </LinearLayout>
