@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "firebase-admin": "^11.9.0",
+    "path": "^0.12.7"
+  }
+}
