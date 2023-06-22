@@ -24,6 +24,7 @@
     <string name="view_on_map">View on map</string>
     <string name="select_current_location">Select current location</string>
     <string name="schedule_yourself">Schedule yourself</string>
+    <string name="notifications">Notifications</string>
 
 
 </resources>

@@ -2,6 +2,7 @@ package com.example.basketgroupsfinal.activities
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
@@ -18,6 +19,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.basketgroupsfinal.R
 import com.example.basketgroupsfinal.models.PlacesViewModel
+import com.example.basketgroupsfinal.utils.Constants
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -89,10 +91,25 @@ class MapPlacesFragment: Fragment() {
             places?.let {
                 for (place in it) {
                     val location = LatLng(place.latitude, place.longitude)
-                    googleMap.addMarker(MarkerOptions().position(location).title(place.title))
+                    val marker = googleMap.addMarker(MarkerOptions().position(location).title(place.title))
+                    marker!!.tag = place.id // Save the Place ID in the Marker
+                }
+
+                // Set InfoWindow click listener
+                googleMap.setOnInfoWindowClickListener { marker ->
+                    val placeId = marker.tag as? String
+                    placeId?.let {
+                        navigateToPlaceDetails(it)
+                    }
                 }
             }
         })
+    }
+
+    private fun navigateToPlaceDetails(placeId: String) {
+        val intent = Intent(requireContext(), PlaceDetailsActivity::class.java)
+        intent.putExtra(Constants.DOCUMENT_ID, placeId) // Pass the Place ID to the PlaceDetailsActivity
+        startActivity(intent)
     }
 
     @SuppressLint("MissingPermission")

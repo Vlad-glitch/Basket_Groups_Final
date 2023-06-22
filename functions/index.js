@@ -18,29 +18,19 @@ exports.notifyUsers = functions.firestore
             JSON.stringify(previousValue.scheduledPlayers);
 
       // If either the players or scheduledPlayers field has changed,
-      // send notifications to the scheduled players.
+      // send notifications to the topic.
       if (playersChanged || scheduledPlayersChanged) {
-        for (const player of newValue.scheduledPlayers) {
-          // Retrieve the user document to get the FCM token
-          const userSnapshot = await admin.firestore()
-              .collection("users")
-              .doc(player.id)
-              .get();
-          const user = userSnapshot.data();
+        // Define the message
+        const message = {
+          notification: {
+            title: "Game Update!",
+            body: `The players or scheduled players list at
+            ${newValue.title} has changed.`,
+          },
+          topic: `place_${context.params.placeId}`,
+        };
 
-          // Define the notification
-          const payload = {
-            notification: {
-              title: "Game Update!",
-              body: `The players or scheduled players list
-              at ${newValue.title} has changed.`,
-            },
-          };
-
-          // Send the notification
-          if (user.fcmToken) {
-            await admin.messaging().sendToDevice(user.fcmToken, payload);
-          }
-        }
+        // Send the message
+        await admin.messaging().send(message);
       }
     });
