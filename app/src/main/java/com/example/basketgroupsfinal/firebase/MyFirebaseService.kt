@@ -1,5 +1,6 @@
 package com.example.basketgroupsfinal.firebase
 
+import android.content.Context
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -20,8 +21,12 @@ class MyFirebaseService: FirebaseMessagingService() {
             // Set the new FCM token
             userRef.update("fcmToken", token)
         } else {
-        // Log an error message if there is no current user
-        Log.e("MyFirebaseService", "onNewToken called, but there is no logged in user to associate the token with.")
+            // Save the token to shared preferences if there's no logged-in user
+            val sharedPref = getSharedPreferences("MyApp", Context.MODE_PRIVATE)
+            with(sharedPref.edit()) {
+                putString("fcmToken", token)
+                apply()
+            }
         }
     }
 

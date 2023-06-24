@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/intro_screen_image_marginTop"
         android:contentDescription="@string/image_contentDescription"
-        android:src="@drawable/ic_launcher_foreground"
+        android:src="@drawable/ic_baseline_sports_basketball_24"
          />
 
 

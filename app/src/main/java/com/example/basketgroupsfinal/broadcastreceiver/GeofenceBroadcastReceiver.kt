@@ -50,7 +50,9 @@ class GeofenceBroadcastReceiver: BroadcastReceiver() {
                             val placeId = geofence.requestId
                             val userId = FirestoreClass().getCurrentUserID()
                             if(userId != ""){
-                                FirestoreClass().removePlayerFromPlace(placeId, userId)
+                                if (userId != null) {
+                                    FirestoreClass().removePlayerFromPlace(placeId, userId)
+                                }
                             } else {
                                 Log.d("BroadcastReceiver", "Geofence EXIT but no user")
                             }
@@ -65,7 +67,9 @@ class GeofenceBroadcastReceiver: BroadcastReceiver() {
                             val placeId = geofence.requestId
                             val userId = FirestoreClass().getCurrentUserID()
                             if(userId != ""){
-                                FirestoreClass().addPlayerToPlace(placeId, userId)
+                                if (userId != null) {
+                                    FirestoreClass().addPlayerToPlace(placeId, userId)
+                                }
                             } else {
                                 Log.d("BroadcastReceiver", "Geofence DWELL but no user")
                             }

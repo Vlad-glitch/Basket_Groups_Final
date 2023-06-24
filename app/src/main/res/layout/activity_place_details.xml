@@ -73,28 +73,54 @@
         android:layout_marginLeft="10dp"
         android:text="Description" />
 
-    <Button
-        android:id="@+id/btn_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/view_on_map" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <Button
+            <android.widget.Button
+                android:id="@+id/btn_location"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/shape_button_rounded"
+                android:foreground="?attr/selectableItemBackground"
+                android:textColor="@android:color/white"
+                android:text="@string/view_on_map"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:gravity="center"
+                android:textSize="14sp" />
+
+            <android.widget.Button
                 android:id="@+id/btn_schedule"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/schedule_yourself" />
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/shape_button_rounded"
+                android:foreground="?attr/selectableItemBackground"
+                android:textColor="@android:color/white"
+                android:text="@string/schedule_yourself"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:gravity="center"
+                android:textSize="14sp" />
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/btn_view_calendar"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="View Calendar" />
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/shape_button_rounded"
+                android:foreground="?attr/selectableItemBackground"
+                android:textColor="@android:color/white"
+                android:text="View Calendar"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:gravity="center"
+                android:textSize="14sp" />
+
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

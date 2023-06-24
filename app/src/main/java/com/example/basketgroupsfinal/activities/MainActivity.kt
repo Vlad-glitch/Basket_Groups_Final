@@ -263,6 +263,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
 
             R.id.nav_sign_out -> {
+
                 // Here sign outs the user from firebase in this device.
                 FirebaseAuth.getInstance().signOut()
 
@@ -271,6 +272,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
                 finish()
+
             }
 
             R.id.nav_list -> {

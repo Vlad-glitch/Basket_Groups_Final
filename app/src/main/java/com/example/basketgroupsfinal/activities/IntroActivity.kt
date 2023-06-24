@@ -21,9 +21,11 @@ class IntroActivity : BaseActivity() {
 
         val currentUserID = FirestoreClass().getCurrentUserID()
 
-        if (currentUserID.isNotEmpty()) {
-            // Start the Main Activity
-            startActivity(Intent(this, MainActivity::class.java))
+        if (currentUserID != null) {
+            if (currentUserID.isNotEmpty()) {
+                // Start the Main Activity
+                startActivity(Intent(this, MainActivity::class.java))
+            }
         }
 
 
