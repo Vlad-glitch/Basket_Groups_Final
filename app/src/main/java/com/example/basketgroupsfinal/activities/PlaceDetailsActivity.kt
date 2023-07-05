@@ -69,6 +69,7 @@ class PlaceDetailsActivity : BaseActivity() {
             val intent = Intent(this, MapActivity::class.java)
             intent.putExtra(Constants.LATITUDE, currentPlace?.latitude)
             intent.putExtra(Constants.LONGITUDE, currentPlace?.longitude)
+            intent.putExtra(Constants.PLACE_NAME, currentPlace?.title)
             startActivity(intent)
         }
 

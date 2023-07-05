@@ -36,12 +36,12 @@ class PlaceListFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         /*
         binding?.floatingActionButton?.setOnClickListener {
             val intent = Intent(context, AddBasketPlaceActivity::class.java)
             startActivity(intent)
         }
-
          */
 
         placesViewModel = ViewModelProvider(requireActivity()).get(PlacesViewModel::class.java)

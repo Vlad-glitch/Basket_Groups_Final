@@ -118,13 +118,13 @@ class MapPlacesFragment: Fragment() {
             .addOnSuccessListener { location: Location? ->
                 location?.let {
                     val currentLatLng = LatLng(location.latitude, location.longitude)
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17f))
                 } ?: run {
                     placesViewModel.places.value?.let { places ->
                         if (places.isNotEmpty()) {
                             val firstPlace = places[0]
                             val firstPlaceLatLng = LatLng(firstPlace.latitude, firstPlace.longitude)
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(firstPlaceLatLng, 12f))
+                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(firstPlaceLatLng, 17f))
                         } else {
                             // If no places and no location is available, set to a default location
                             val defaultLocation = LatLng(26.0322107, 26.0322107)

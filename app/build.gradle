@@ -91,7 +91,7 @@ dependencies {
 
     implementation("androidx.fragment:fragment-ktx:1.5.7")
 
-    //androidTestImplementation('androidx.test.espresso:espresso-core:3.6.0-alpha01')
-    //androidTestImplementation('androidx.test:runner:1.4.0')
-    //androidTestImplementation('androidx.test:rules:1.6.0-alpha01')
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.6.0-alpha01')
+    androidTestImplementation('androidx.test:runner:1.4.0')
+    androidTestImplementation('androidx.test:rules:1.6.0-alpha01')
 }

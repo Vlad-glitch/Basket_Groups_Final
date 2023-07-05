@@ -336,11 +336,13 @@ class AddBasketPlaceActivity : BaseActivity() {
             /*Requests permissions to be granted to this application. These permissions
              must be requested in your manifest, they should not be granted to your app,
              and they should have protection level*/
-            ActivityCompat.requestPermissions(
+            /*ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                 MyProfileActivity.READ_STORAGE_PERMISSION_CODE
             )
+
+             */
         }
     }
 

@@ -15,5 +15,6 @@ object Constants {
     const val DOCUMENT_ID: String = "id"
     const val LATITUDE: String = "latitude"
     const val LONGITUDE: String = "longitude"
+    const val PLACE_NAME: String = "place_name"
 
 }

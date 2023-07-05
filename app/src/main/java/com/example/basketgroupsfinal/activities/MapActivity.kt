@@ -1,5 +1,6 @@
 package com.example.basketgroupsfinal.activities
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import com.example.basketgroupsfinal.R
 import com.example.basketgroupsfinal.databinding.ActivityMapBinding
@@ -15,11 +16,12 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
-class MapActivity : BaseActivity(), OnMapReadyCallback  {
+class MapActivity : BaseActivity(), OnMapReadyCallback {
     private var binding: ActivityMapBinding? = null
 
     private var longitude: Double = 0.0
     private var latitude: Double = 0.0
+    private var placeName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +34,10 @@ class MapActivity : BaseActivity(), OnMapReadyCallback  {
         if(intent.hasExtra(Constants.LATITUDE)){
             latitude = intent.getDoubleExtra(Constants.LATITUDE, 0.0)
         }
-        //showProgressDialog(resources.getString(R.string.please_wait))
+        if(intent.hasExtra(Constants.PLACE_NAME)){
+            placeName = intent.getStringExtra(Constants.PLACE_NAME) ?: ""
+        }
+
         setupActionBar("Map")
 
         val supportMapFragment: SupportMapFragment =
@@ -61,6 +66,7 @@ class MapActivity : BaseActivity(), OnMapReadyCallback  {
 
     }
 
+    @SuppressLint("MissingPermission") // Make sure to handle permission before calling this method
     override fun onMapReady(googleMap: GoogleMap) {
         /**
          * Add a marker on the location using the latitude and longitude and move the camera to it.
@@ -69,9 +75,13 @@ class MapActivity : BaseActivity(), OnMapReadyCallback  {
             latitude,
             longitude
         )
-        googleMap.addMarker(MarkerOptions().position(position).title("TestTitle"))
+        googleMap.addMarker(MarkerOptions().position(position).title(placeName))
         val newLatLngZoom = CameraUpdateFactory.newLatLngZoom(position, 15f)
         googleMap.animateCamera(newLatLngZoom)
 
+        // Enable my location layer and controls
+        googleMap.isMyLocationEnabled = true
+        googleMap.uiSettings.isMyLocationButtonEnabled = true
+        googleMap.uiSettings.isMapToolbarEnabled = true // Enable Google Maps app toolbar
     }
 }

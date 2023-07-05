@@ -13,9 +13,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_baseline_sports_basketball_24"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_baseline_sports_basketball_24"
         android:supportsRtl="true"
         android:theme="@style/Theme.BasketGroupsFinal">
         <activity
@@ -34,13 +34,6 @@
         </receiver>
         <receiver android:name=".broadcastreceiver.PlayerJoinAlarmReceiver" />
 
-        <activity
-            android:name=".PlayersProfileAdapter"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
         <activity
             android:name=".activities.MapActivity"
             android:exported="true"
